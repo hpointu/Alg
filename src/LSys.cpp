@@ -1,5 +1,4 @@
 #include "LSys.hpp"
-#include <boost/algorithm/string.hpp>
 #include <iostream>
 
 LSys::LSys()

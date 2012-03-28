@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+class Alg;
+
 typedef struct
 {
 	double angle;
@@ -18,11 +20,11 @@ public:
 	void initState();
 	void rotate(bool cw = true);
 	void stepLine(sf::RenderTarget *target);
+	void stepLine(Alg *alg);
 	void stack();
 	void unstack();
 
-	void drawString(const std::string &str,
-						 sf::RenderTarget *target);
+	void build(const std::string &str, Alg* alg);
 
 private:
 	std::vector<State*> states;

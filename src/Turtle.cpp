@@ -1,5 +1,7 @@
 #include "Turtle.hpp"
 #include <cmath>
+#include "const.hpp"
+#include "Alg.hpp"
 
 Turtle::Turtle() :
 	lUnit(5.f), aUnit(10.f)
@@ -11,8 +13,8 @@ void Turtle::initState()
 	// init state
 	State *s = new State();
 	s->angle = 270.f;
-	s->x = 1024/2;
-	s->y = 768/2;
+	s->x = 0;
+	s->y = 0;
 	this->states.push_back(s);
 }
 
@@ -41,8 +43,8 @@ void Turtle::stepLine(sf::RenderTarget *target)
 	x2 += ::cos(radAngle)*lUnit;
 	y2 += ::sin(radAngle)*lUnit;
 
-	sf::Shape line = sf::Shape::Line(currentState->x, currentState->y,
-												x2, y2, 1.f, sf::Color::Black);
+	sf::Shape line = sf::Shape::Line(currentState->x/SCALE, currentState->y/SCALE,
+												x2/SCALE, y2/SCALE, 1.f/SCALE, sf::Color::Black);
 
 	// update state
 	currentState->x = x2;
@@ -51,7 +53,25 @@ void Turtle::stepLine(sf::RenderTarget *target)
 	target->Draw(line);
 }
 
-void Turtle::drawString(const std::string &str, sf::RenderTarget *target)
+void Turtle::stepLine(Alg *alg)
+{
+	State *currentState = states.back();
+	double x2 = currentState->x;
+	double y2 = currentState->y;
+	double radAngle = currentState->angle*M_PI/180;
+	x2 += ::cos(radAngle)*lUnit;
+	y2 += ::sin(radAngle)*lUnit;
+
+	alg->addSegment(currentState->x/SCALE, currentState->y/SCALE,
+						 x2/SCALE, y2/SCALE);
+
+	// update state
+	currentState->x = x2;
+	currentState->y = y2;
+
+}
+
+void Turtle::build(const std::string &str, Alg* alg)
 {
 	unsigned int i;
 	char c;
@@ -69,7 +89,7 @@ void Turtle::drawString(const std::string &str, sf::RenderTarget *target)
 		case 'D':
 		case 'E':
 		case 'F':
-			stepLine(target);
+			stepLine(alg);
 			break;
 
 		// other symbols

@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS "-g -Wall")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 find_package(SFML REQUIRED)
+find_package(BOX2D REQUIRED)
 
 include_directories(${SFML_INCLUDE_DIR})
 
@@ -20,4 +21,4 @@ file(
 
 add_executable(alg ${MAIN_SOURCES})
 
-target_link_libraries(alg ${mainLibs})
+target_link_libraries(alg ${mainLibs} ${BOX2D_LIBRARY})
