@@ -8,6 +8,7 @@
 #include <string>
 #include "Segment.hpp"
 #include <Box2D/Box2D.h>
+#include "Kern.hpp"
 
 class Alg
 {
@@ -20,12 +21,18 @@ public:
 
 	void addSegment(double x1, double y1, double x2, double y2);
 
+	bool isAlive();
+
 private:
 	int pe;
 	std::string repr;
 	Genome genome;
-	sf::Shape kernelShape;
 	Turtle *turtle;
+
+	sf::Clock clock;
+	float lifetime;
+
+	Kern *kernel;
 
 	std::vector<Segment*> segments;
 	b2World *physics;

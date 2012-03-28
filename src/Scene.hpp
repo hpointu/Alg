@@ -18,10 +18,13 @@ public:
 
 	void throwParticle(int nb=1);
 
+	bool isRunning();
+
 private:
 	Alg *alg;
 	b2World *physics;
 	std::vector<Particle*> particles;
+	bool running;
 };
 
 #endif // SCENE_HPP

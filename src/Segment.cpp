@@ -1,6 +1,6 @@
 #include "Segment.hpp"
 #include "const.hpp"
-
+#include "EntityManager.hpp"
 Segment::Segment(b2World *physics, double x1, double y1, double x2, double y2) :
 	Entity(physics),
 	v1(x1, -y1),
@@ -25,9 +25,18 @@ Segment::~Segment()
 {
 }
 
+void Segment::onCollision(Entity *other)
+{
+	EntityManager::getInstance()->enqueueToDelete(this);
+	EntityManager::getInstance()->enqueueToDelete(other);
+}
+
 void Segment::render(sf::RenderTarget *target)
 {
-	sf::Shape shape = sf::Shape::Line(v1.x, -v1.y, v2.x, -v2.y,
-												 1.f/SCALE, sf::Color::Black);
-	target->Draw(shape);
+	if(body)
+	{
+		sf::Shape shape = sf::Shape::Line(v1.x, -v1.y, v2.x, -v2.y,
+													 1.f/SCALE, sf::Color::Black);
+		target->Draw(shape);
+	}
 }

@@ -3,14 +3,19 @@
 #include <cstdlib>
 #include "ContactListener.hpp"
 #include <iostream>
+#include "EntityManager.hpp"
 
 Scene::Scene()
 {
 	physics = new b2World(b2Vec2(0, 0));
 	physics->SetContactListener(new ContactListener());
 	alg = new Alg(physics);
+	running = true;
+}
 
-
+bool Scene::isRunning()
+{
+	return running;
 }
 
 Scene::~Scene()
@@ -28,35 +33,27 @@ void Scene::render(sf::RenderTarget *target)
 	for(it=particles.begin(); it!=particles.end(); it++)
 	{
 		Particle *p = *it;
-		// clean
-		if(!p->dead)
-		{
-			p->render(target);
-		}
-		else
-		{
-			p->deleteMe();
-		}
+		p->render(target);
+
 	}
 
 	// physics step :
 	float32 tstep = 1.0f/20.0f;
-	physics->Step(tstep,20,20);
+	if(alg->isAlive())
+		physics->Step(tstep,20,20);
+	else
+		running = false;
 
 	// delete old particles :
-//	if(particles.size() > 200)
-//	{
-//		for(unsigned int i=0; i<100; i++)
-//		{
-//			Particle *p = particles.front();
-//			p->deleteMe();
-//			particles.erase(particles.begin());
-//		}
-//	}
-
-
-	// debug
-	std::cout << particles.size() << " particles" << std::endl;
+	if(particles.size() > 200)
+	{
+		for(unsigned int i=0; i<100; i++)
+		{
+			Particle *p = particles.front();
+			EntityManager::getInstance()->enqueueToDelete(p);
+			particles.erase(particles.begin());
+		}
+	}
 }
 
 void Scene::throwParticle(int nb)

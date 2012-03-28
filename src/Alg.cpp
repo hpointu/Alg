@@ -9,9 +9,7 @@ Alg::Alg(b2World *physics) :
 	physics(physics)
 {
 	turtle = new Turtle();
-	kernelShape = sf::Shape::Circle(0, 0,
-											  10.f/SCALE, sf::Color(180, 0, 0, 200));
-
+	kernel = new Kern(physics);
 	growUp();
 }
 
@@ -21,6 +19,8 @@ void Alg::growUp()
 	ls.iter(5);
 	repr = ls.str();
 	turtle->build(repr, this);
+	lifetime = 0;
+	clock.Reset();
 
 	std::cout << "SIZE: " << repr.size() << std::endl;
 }
@@ -37,22 +37,20 @@ void Alg::addSegment(double x1, double y1, double x2, double y2)
 	segments.push_back(s);
 }
 
+bool Alg::isAlive()
+{
+	return kernel->isAlive();
+}
+
 void Alg::render(sf::RenderTarget *target)
 {
-	target->Draw(this->kernelShape);
+	if(isAlive())
+		lifetime = clock.GetElapsedTime();
+	kernel->render(target);
 	std::vector<Segment*>::iterator it;
 	for(it=segments.begin(); it!=segments.end(); it++)
 	{
 		Segment *s = *it;
-		// clean and render :
-		if(!s->dead)
-		{
-			s->render(target);
-		}
-		else
-		{
-			s->deleteMe();
-			segments.erase(it);
-		}
+		s->render(target);
 	}
 }

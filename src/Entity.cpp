@@ -1,6 +1,8 @@
 #include "Entity.hpp"
 #include <iostream>
 
+#include "EntityManager.hpp"
+
 Entity::Entity(b2World *physics) :
 	dead(false),
 	physics(physics)
@@ -9,7 +11,6 @@ Entity::Entity(b2World *physics) :
 
 void Entity::onCollision(Entity *)
 {
-	dead = true;
 }
 
 void Entity::deleteMe()

@@ -11,6 +11,8 @@ public:
 	Segment(b2World *physics, double x1, double y1, double x2, double y2);
 	~Segment();
 
+	virtual void onCollision(Entity *other);
+
 	void render(sf::RenderTarget *target);
 
 private:

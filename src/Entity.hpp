@@ -13,7 +13,7 @@ public:
 
 	virtual void deleteMe();
 
-	virtual void render(sf::RenderTarget *t) = 0;
+	virtual void render(sf::RenderTarget *target) = 0;
 	bool dead;
 
 protected:

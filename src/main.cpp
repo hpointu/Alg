@@ -7,6 +7,8 @@
 #include "Scene.hpp"
 #include <SFML/System.hpp>
 
+#include "EntityManager.hpp"
+
 int main(void)
 {
 	srand(time(0)); // init random
@@ -49,9 +51,13 @@ int main(void)
 
 		if(clockParticles.GetElapsedTime() > 0.1)
 		{
-			scene->throwParticle(10);
+			if(scene->isRunning())
+				scene->throwParticle(10);
 			clockParticles.Reset();
 		}
+
+
+		EntityManager::getInstance()->deleteQueue();
 	}
 	return 0;
 }

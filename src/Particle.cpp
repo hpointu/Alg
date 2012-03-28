@@ -10,7 +10,7 @@ Particle::Particle(b2World *physics, double x, double y) :
 	def.position.Set(x,y);
 
 	b2CircleShape circle;
-	circle.m_radius = 2.f/SCALE;
+	circle.m_radius = 1.5/SCALE;
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
@@ -32,8 +32,11 @@ Particle::~Particle()
 
 void Particle::render(sf::RenderTarget *target)
 {
-	sf::Shape shape = sf::Shape::Circle(body->GetPosition().x,
-													-body->GetPosition().y,
-													2.f/SCALE, sf::Color::Blue);
-	target->Draw(shape);
+	if(body)
+	{
+		sf::Shape shape = sf::Shape::Circle(body->GetPosition().x,
+														-body->GetPosition().y,
+														1.5f/SCALE, sf::Color::Blue);
+		target->Draw(shape);
+	}
 }
