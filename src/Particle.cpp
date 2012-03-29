@@ -23,7 +23,7 @@ Particle::Particle(b2World *physics, double x, double y) :
 
 	// give random initial impulse
 	b2Vec2 vect(-90+(rand()%20), (rand()%60)-30);
-	vect = b2Vec2(-3, 0);
+//	vect = b2Vec2(-3, 0);
 	body->ApplyLinearImpulse(vect, body->GetWorldCenter());
 }
 

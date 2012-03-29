@@ -19,7 +19,7 @@ Scene::Scene(int w, int h, int x, int y) :
 	view = new sf::View(sf::Vector2f(0, 0), sf::Vector2f(width/2,
 																		  height/2));
 
-	view->zoom(1.f/SCALE);
+	view->zoom(2.f/SCALE);
 }
 
 bool Scene::isRunning()

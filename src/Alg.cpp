@@ -18,8 +18,8 @@ void Alg::growUp()
 	LSys ls = genome.getLSys();
 	ls.iter(5);
 	repr = ls.str();
-	turtle->build("F+++++++++F", this);
-//	turtle->build(repr, this);
+//	turtle->build("F+++++++++F", this);
+	turtle->build(repr, this);
 	lifetime = 0;
 	clock.restart();
 

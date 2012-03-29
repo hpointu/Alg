@@ -42,7 +42,7 @@ void App::run()
 				if(clockParticles.getElapsedTime().asSeconds() > 0.1)
 				{
 					if(scene->isRunning())
-						scene->throwParticle(1);
+						scene->throwParticle(10);
 					clockParticles.restart();
 				}
 			}
