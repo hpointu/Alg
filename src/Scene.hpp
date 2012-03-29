@@ -11,7 +11,7 @@
 class Scene
 {
 public:
-	Scene();
+	Scene(int w, int h, int x, int y);
 	~Scene();
 
 	void render(sf::RenderTarget *target);
@@ -21,10 +21,13 @@ public:
 	bool isRunning();
 
 private:
+	int width, height;
+	int posX, posY;
 	Alg *alg;
 	b2World *physics;
 	std::vector<Particle*> particles;
 	bool running;
+	sf::View *view;
 };
 
 #endif // SCENE_HPP

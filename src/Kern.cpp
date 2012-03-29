@@ -34,9 +34,10 @@ void Kern::render(sf::RenderTarget *target)
 	if(body)
 	{
 		sf::Color col = dead ? sf::Color(180, 0, 0, 200) : sf::Color(0, 180, 0, 200);
-		sf::Shape shape = sf::Shape::Circle(0, 0,
-														10.f/SCALE,
-														col);
-		target->Draw(shape);
+		sf::CircleShape shape;
+		shape.setRadius(10.f/SCALE);
+		shape.setPosition(-10.f/SCALE,-10.f/SCALE);
+		shape.setFillColor(col);
+		target->draw(shape);
 	}
 }

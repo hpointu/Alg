@@ -5,12 +5,21 @@
 #include <iostream>
 #include "EntityManager.hpp"
 
-Scene::Scene()
+Scene::Scene(int w, int h, int x, int y) :
+	width(w),
+	height(h),
+	posX(x),
+	posY(y)
 {
 	physics = new b2World(b2Vec2(0, 0));
 	physics->SetContactListener(new ContactListener());
 	alg = new Alg(physics);
 	running = true;
+
+	view = new sf::View(sf::Vector2f(0, 0), sf::Vector2f(width/2,
+																		  height/2));
+
+	view->zoom(1.f/SCALE);
 }
 
 bool Scene::isRunning()
@@ -26,6 +35,8 @@ Scene::~Scene()
 
 void Scene::render(sf::RenderTarget *target)
 {
+	target->setView(*view);
+	target->clear(sf::Color(255,255,255));
 	// rendering
 	alg->render(target);
 
@@ -60,9 +71,9 @@ void Scene::throwParticle(int nb)
 {
 	while(nb>0)
 	{
-		double x = W_WIDTH/2/SCALE;
-		double y = rand()%W_HEIGHT;
-		y -= W_HEIGHT/2;
+		double x = width/2/SCALE;
+		double y = rand()%height;
+		y -= height/2;
 		y /= SCALE;
 
 		particles.push_back( new Particle(physics, x, y) );

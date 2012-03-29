@@ -23,6 +23,7 @@ Particle::Particle(b2World *physics, double x, double y) :
 
 	// give random initial impulse
 	b2Vec2 vect(-90+(rand()%20), (rand()%60)-30);
+	vect = b2Vec2(-3, 0);
 	body->ApplyLinearImpulse(vect, body->GetWorldCenter());
 }
 
@@ -34,9 +35,12 @@ void Particle::render(sf::RenderTarget *target)
 {
 	if(body)
 	{
-		sf::Shape shape = sf::Shape::Circle(body->GetPosition().x,
-														-body->GetPosition().y,
-														1.5f/SCALE, sf::Color::Blue);
-		target->Draw(shape);
+		sf::CircleShape shape;
+		shape.setRadius(1.5f/SCALE);
+		shape.setFillColor(sf::Color::Blue);
+		shape.setPosition(body->GetPosition().x-(1.5f/SCALE),
+								-body->GetPosition().y-(1.5f/SCALE));
+
+		target->draw(shape);
 	}
 }

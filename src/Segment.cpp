@@ -1,6 +1,8 @@
 #include "Segment.hpp"
 #include "const.hpp"
 #include "EntityManager.hpp"
+#include <cmath>
+
 Segment::Segment(b2World *physics, double x1, double y1, double x2, double y2) :
 	Entity(physics),
 	v1(x1, -y1),
@@ -35,8 +37,17 @@ void Segment::render(sf::RenderTarget *target)
 {
 	if(body)
 	{
-		sf::Shape shape = sf::Shape::Line(v1.x, -v1.y, v2.x, -v2.y,
-													 1.f/SCALE, sf::Color::Black);
-		target->Draw(shape);
+		double a = v2.y/SCALE - v1.y/SCALE;
+		double b = v2.x/SCALE - v1.x/SCALE;
+		double length = ::sqrt( (a*a) + (b*b) );
+		double radangle = ::acos(b/length);
+		double angle = radangle*180/M_PI;
+
+		sf::RectangleShape line(sf::Vector2f(length, 0.5/SCALE));
+		line.setFillColor(sf::Color::Black);
+		line.setPosition(v1.x/SCALE, -v1.y/SCALE);
+		line.rotate(-angle);
+
+		target->draw(line);
 	}
 }

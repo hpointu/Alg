@@ -18,9 +18,10 @@ void Alg::growUp()
 	LSys ls = genome.getLSys();
 	ls.iter(5);
 	repr = ls.str();
-	turtle->build(repr, this);
+	turtle->build("F+++++++++F", this);
+//	turtle->build(repr, this);
 	lifetime = 0;
-	clock.Reset();
+	clock.restart();
 
 	std::cout << "SIZE: " << repr.size() << std::endl;
 }
@@ -45,7 +46,7 @@ bool Alg::isAlive()
 void Alg::render(sf::RenderTarget *target)
 {
 	if(isAlive())
-		lifetime = clock.GetElapsedTime();
+		lifetime = clock.getElapsedTime().asSeconds();
 	kernel->render(target);
 	std::vector<Segment*>::iterator it;
 	for(it=segments.begin(); it!=segments.end(); it++)
