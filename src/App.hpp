@@ -14,6 +14,8 @@
 #include "EntityManager.hpp"
 
 #include "Singleton.hpp"
+#include "Genome.hpp"
+#include "Alg.hpp"
 
 class App : public Singleton<App>
 {
@@ -26,6 +28,7 @@ private:
 	App();
 	std::vector<Scene*> scenes;
 	sf::RenderWindow *window;
+	Genome currentGenome;
 
 };
 

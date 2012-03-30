@@ -13,13 +13,23 @@ Scene::Scene(int w, int h, int x, int y) :
 {
 	physics = new b2World(b2Vec2(0, 0));
 	physics->SetContactListener(new ContactListener());
-	alg = new Alg(physics);
 	running = true;
 
 	view = new sf::View(sf::Vector2f(0, 0), sf::Vector2f(width/2,
 																		  height/2));
 
 	view->zoom(2.f/SCALE);
+
+	sf::FloatRect vp( (float)x/W_WIDTH,
+							(float)y/W_HEIGHT,
+							(float)width/W_WIDTH,
+							(float)height/W_HEIGHT );
+	view->setViewport(vp);
+}
+
+void Scene::initAlg(const Genome &genome)
+{
+	alg = Alg(this->physics, genome);
 }
 
 bool Scene::isRunning()
@@ -29,16 +39,23 @@ bool Scene::isRunning()
 
 Scene::~Scene()
 {
-	delete alg;
 	delete physics;
 }
 
 void Scene::render(sf::RenderTarget *target)
 {
 	target->setView(*view);
-	target->clear(sf::Color(255,255,255));
+//	target->clear(sf::Color(255,255,255));
+
+	sf::RectangleShape border(sf::Vector2f(width/SCALE, height/SCALE));
+	border.setPosition(-width/2.f/SCALE,-height/2.f/SCALE);
+	border.setFillColor(sf::Color::Transparent);
+	border.setOutlineColor(sf::Color::Black);
+	border.setOutlineThickness(1.f/SCALE);
+	target->draw(border);
+
 	// rendering
-	alg->render(target);
+	alg.render(target);
 
 	std::vector<Particle*>::iterator it;
 	for(it=particles.begin(); it!=particles.end(); it++)
@@ -50,21 +67,21 @@ void Scene::render(sf::RenderTarget *target)
 
 	// physics step :
 	float32 tstep = 1.0f/20.0f;
-	if(alg->isAlive())
+	if(alg.isAlive())
 		physics->Step(tstep,20,20);
 	else
 		running = false;
 
-	// delete old particles :
-	if(particles.size() > 200)
-	{
-		for(unsigned int i=0; i<100; i++)
-		{
-			Particle *p = particles.front();
-			EntityManager::getInstance()->enqueueToDelete(p);
-			particles.erase(particles.begin());
-		}
-	}
+//	// delete old particles :
+//	if(particles.size() > 200)
+//	{
+//		for(unsigned int i=0; i<100; i++)
+//		{
+//			Particle *p = particles.front();
+//			EntityManager::getInstance()->enqueueToDelete(p);
+//			particles.erase(particles.begin());
+//		}
+//	}
 }
 
 void Scene::throwParticle(int nb)

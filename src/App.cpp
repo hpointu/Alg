@@ -2,6 +2,7 @@
 
 App::App()
 {
+
 }
 
 void App::run()
@@ -15,7 +16,29 @@ void App::run()
 											sf::Style::Close);
 
 
-	scenes.push_back(new Scene(W_WIDTH, W_HEIGHT, 0, 0));
+	Genome copy;
+
+	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, 0, 0));
+	copy = currentGenome;
+//	copy.mutateRandomScheme();
+	scenes.back()->initAlg(copy);
+
+	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, W_WIDTH/2, 0));
+	copy = currentGenome;
+	copy.mutateRandomScheme();
+	scenes.back()->initAlg(copy);
+
+	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, 0, W_HEIGHT/2));
+	copy = currentGenome;
+	copy.mutateRandomScheme();
+	scenes.back()->initAlg(copy);
+
+	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, W_WIDTH/2, W_HEIGHT/2));
+	copy = currentGenome;
+	copy.mutateRandomScheme();
+	scenes.back()->initAlg(copy);
+
+//	scenes.push_back(new Scene(W_WIDTH, W_HEIGHT, 0, 0));
 
 	sf::Clock clock, clockParticles;
 	clock.restart();
@@ -43,7 +66,8 @@ void App::run()
 				{
 					if(scene->isRunning())
 						scene->throwParticle(10);
-					clockParticles.restart();
+					if(it == scenes.end())
+						clockParticles.restart();
 				}
 			}
 			window->display();

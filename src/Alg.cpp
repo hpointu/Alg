@@ -4,11 +4,16 @@
 #include "LSys.hpp"
 #include "const.hpp"
 
-Alg::Alg(b2World *physics) :
+Alg::Alg()
+{
+
+}
+
+Alg::Alg(b2World *physics, const Genome &genome) :
 	pe(100),
+	genome(genome),
 	physics(physics)
 {
-	turtle = new Turtle();
 	kernel = new Kern(physics);
 	growUp();
 }
@@ -19,7 +24,7 @@ void Alg::growUp()
 	ls.iter(5);
 	repr = ls.str();
 //	turtle->build("F+++++++++F", this);
-	turtle->build(repr, this);
+	turtle.build(repr, this);
 	lifetime = 0;
 	clock.restart();
 

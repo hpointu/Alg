@@ -13,7 +13,8 @@
 class Alg
 {
 public:
-	Alg(b2World *physics);
+	Alg();
+	Alg(b2World *physics, const Genome &genome);
 	void render(sf::RenderTarget *target);
 
 	void mutate();
@@ -27,7 +28,7 @@ private:
 	int pe;
 	std::string repr;
 	Genome genome;
-	Turtle *turtle;
+	Turtle turtle;
 
 	sf::Clock clock;
 	float lifetime;

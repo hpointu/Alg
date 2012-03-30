@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Alg.hpp"
+#include "Genome.hpp"
 #include "Particle.hpp"
 
 class Scene
@@ -13,6 +14,8 @@ class Scene
 public:
 	Scene(int w, int h, int x, int y);
 	~Scene();
+
+	void initAlg(const Genome &genome);
 
 	void render(sf::RenderTarget *target);
 
@@ -23,7 +26,7 @@ public:
 private:
 	int width, height;
 	int posX, posY;
-	Alg *alg;
+	Alg alg;
 	b2World *physics;
 	std::vector<Particle*> particles;
 	bool running;
