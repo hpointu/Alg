@@ -37,6 +37,9 @@ void App::initGenerationScenes()
 	}
 
 	nbAlive = nbScenesX+nbScenesY;
+
+	if(generationCpt%10==1)
+		history->addGenome(currentGenome);
 }
 
 void App::run()
@@ -46,8 +49,10 @@ void App::run()
 	window = new sf::RenderWindow(sf::VideoMode(W_WIDTH,
 															  W_HEIGHT,
 															  32),
-											"alg",
+											"Alg",
 											sf::Style::Close);
+
+	history = new HistoryWindow();
 
 
 
@@ -67,10 +72,11 @@ void App::run()
 				window->close();
 		}
 
+		history->manageEvents();
+
 		if(clock.getElapsedTime().asSeconds() > 1.f/60)
 		{
 			window->clear(sf::Color(255, 255, 255));
-
 			// drawing
 			std::vector<Scene*>::iterator it;
 			for(it=scenes.begin(); it!=scenes.end(); it++)
@@ -104,6 +110,9 @@ void App::run()
 			window->draw(hudText);
 
 			window->display();
+
+			history->render();
+
 			clock.restart();
 		}
 

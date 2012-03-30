@@ -17,7 +17,7 @@ class Turtle
 {
 public:
 	Turtle();
-	void initState();
+	void initState(int x = 0, int y = 0);
 	void rotate(bool cw = true);
 	void stepLine(sf::RenderTarget *target);
 	void stepLine(Alg *alg);
@@ -25,6 +25,7 @@ public:
 	void unstack();
 
 	void build(const std::string &str, Alg* alg);
+	void draw(const std::string &str, sf::RenderTarget *target);
 
 private:
 	std::vector<State*> states;

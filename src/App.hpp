@@ -16,6 +16,7 @@
 #include "Singleton.hpp"
 #include "Genome.hpp"
 #include "Alg.hpp"
+#include "HistoryWindow.hpp"
 
 class App : public Singleton<App>
 {
@@ -30,6 +31,7 @@ private:
 	std::vector<Scene*> scenes;
 	int nbAlive;
 	sf::RenderWindow *window;
+	HistoryWindow *history;
 	Genome currentGenome;
 
 	int generationCpt;
