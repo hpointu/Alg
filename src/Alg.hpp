@@ -13,8 +13,8 @@
 class Alg
 {
 public:
-	Alg();
 	Alg(b2World *physics, const Genome &genome);
+	~Alg();
 	void render(sf::RenderTarget *target);
 
 	void mutate();
@@ -24,7 +24,11 @@ public:
 
 	inline float getLifetime(){ return lifetime; }
 
+	int getSize();
+
 	bool isAlive();
+
+	inline Genome getGenome(){ return genome; }
 
 private:
 	int pe;

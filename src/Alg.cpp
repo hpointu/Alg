@@ -3,10 +3,17 @@
 #include <iostream>
 #include "LSys.hpp"
 #include "const.hpp"
+#include "EntityManager.hpp"
 
-Alg::Alg()
+Alg::~Alg()
 {
-
+	std::vector<Segment*>::iterator it;
+	for(it=segments.begin(); it!=segments.end(); it++)
+	{
+		Segment *s = *it;
+		EntityManager::getInstance()->enqueueToDelete(s);
+	}
+	EntityManager::getInstance()->deleteQueue();
 }
 
 Alg::Alg(b2World *physics, const Genome &genome) :
@@ -23,12 +30,17 @@ void Alg::growUp()
 	LSys ls = genome.getLSys();
 	ls.iter(5);
 	repr = ls.str();
-//	turtle->build("F+++++++++F", this);
+//	turtle.build("FFFF+++++++++FFFF+++++++++FFFF+++++FFFF", this);
 	turtle.build(repr, this);
 	lifetime = 0;
 	clock.restart();
 
-	std::cout << "SIZE: " << repr.size() << std::endl;
+	std::cout << "SIZE: " << getSize() << std::endl;
+}
+
+int Alg::getSize()
+{
+	return this->repr.size();
 }
 
 void Alg::mutate()

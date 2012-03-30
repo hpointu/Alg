@@ -28,8 +28,12 @@ public:
 private:
 	App();
 	std::vector<Scene*> scenes;
+	int nbAlive;
 	sf::RenderWindow *window;
 	Genome currentGenome;
+
+	int generationCpt;
+	bool screened;
 
 };
 

@@ -1,8 +1,10 @@
 #include "Kern.hpp"
 #include "const.hpp"
+#include "EntityManager.hpp"
 
 Kern::Kern(b2World *physics) :
-	Entity(physics)
+	Entity(physics),
+	pv(5)
 {
 	b2BodyDef def;
 	def.position.Set(0,0);
@@ -19,9 +21,13 @@ Kern::Kern(b2World *physics) :
 	body->CreateFixture(&fixtureDef);
 }
 
-void Kern::onCollision(Entity *)
+void Kern::onCollision(Entity *other)
 {
-	dead = true;
+	EntityManager::getInstance()->enqueueToDelete(other);
+
+	pv--;
+	if(pv <= 0)
+		dead = true;
 }
 
 bool Kern::isAlive()

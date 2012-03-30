@@ -42,6 +42,8 @@ void Segment::render(sf::RenderTarget *target)
 		double length = ::sqrt( (a*a) + (b*b) );
 		double radangle = ::acos(b/length);
 		double angle = radangle*180/M_PI;
+		if(v2.y < v1.y)
+			angle *= -1;
 
 		sf::RectangleShape line(sf::Vector2f(length, 1.f/SCALE));
 		line.setFillColor(sf::Color::Black);

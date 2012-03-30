@@ -23,10 +23,15 @@ public:
 
 	bool isRunning();
 
+	float getScore();
+
+	Genome getAlgGenome();
+
 private:
+	void _render(sf::RenderTarget *target);
 	int width, height;
 	int posX, posY;
-	Alg alg;
+	Alg *alg;
 	b2World *physics;
 	std::vector<Particle*> particles;
 	bool running;

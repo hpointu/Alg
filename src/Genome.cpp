@@ -5,15 +5,19 @@
 Genome::Genome()
 {
 	singleSymbols[0] = 'F';
-	singleSymbols[1] = '+';
-	singleSymbols[2] = '-';
-	singleSymbols[3] = 'A';
-	singleSymbols[4] = 'B';
-	singleSymbols[5] = 'C';
+	singleSymbols[1] = 'A';
+	singleSymbols[2] = 'B';
+	singleSymbols[3] = 'C';
+	singleSymbols[4] = '-';
+	singleSymbols[5] = '-';
+	singleSymbols[6] = '-';
+	singleSymbols[7] = '+';
+	singleSymbols[8] = '+';
+	singleSymbols[9] = '+';
 
 	schemes[0] = "B";
-	schemes[1] = "[-CF-CF-CF-CF]CF[+CF+CF+CF+CF]";
-	schemes[2] = "BF";
+	schemes[1] = "[---FFC][+++FFC]FFC";
+	schemes[2] = "[----FF][++++FF]FBF";
 }
 
 LSys Genome::getLSys() const
@@ -28,7 +32,7 @@ LSys Genome::getLSys() const
 
 void Genome::mutateRandomScheme()
 {
-	int scheme = rand()%2 +1;
+	int scheme = rand()%2+1;
 	int mutype = rand()%15;
 //	mutype = 3;
 
@@ -81,7 +85,7 @@ void Genome::transformOneChar(int scheme)
 		}
 		if(pos < str.size())
 		{
-			char newChar = singleSymbols[rand()%6];
+			char newChar = singleSymbols[rand()%10];
 			std::string s = std::string(1, newChar);
 
 			str.replace(pos, 1, s);
@@ -94,7 +98,7 @@ void Genome::addOneChar(int scheme)
 {
 	std::string str = schemes[scheme];
 	int pos = str.size()>0 ? rand()%str.size() : 0;
-	char newChar = singleSymbols[rand()%6];
+	char newChar = singleSymbols[rand()%10];
 	str.insert(pos, 1, newChar);
 	schemes[scheme] = str;
 }

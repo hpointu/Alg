@@ -13,6 +13,9 @@ public:
 
 	bool isAlive();
 
+private:
+	int pv;
+
 };
 
 #endif // KERN_HPP

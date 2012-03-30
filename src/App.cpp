@@ -1,14 +1,22 @@
 #include "App.hpp"
 
+#include <sstream>
+#include <ctime>
+
 App::App()
 {
-
+	generationCpt = 0;
+	screened = false;
 }
 
 void App::initGenerationScenes()
 {
+	generationCpt++;
 	int nbScenesX = 4;
-	int nbScenesY = 3;
+	int nbScenesY = 4;
+//	nbScenesX = 1;
+//	nbScenesY = 1;
+
 	Genome copy = currentGenome;
 
 	scenes.clear();
@@ -27,6 +35,8 @@ void App::initGenerationScenes()
 			copy.mutateRandomScheme();
 		}
 	}
+
+	nbAlive = nbScenesX+nbScenesY;
 }
 
 void App::run()
@@ -71,15 +81,66 @@ void App::run()
 				{
 					if(scene->isRunning())
 						scene->throwParticle(10);
+					else
+						nbAlive--;
 					if(it == scenes.end())
 						clockParticles.restart();
 				}
 			}
+
+			// drawing hud
+			window->setView(window->getDefaultView());
+			sf::RectangleShape bghud(sf::Vector2f(90.f, 12.f));
+			bghud.setPosition(0,0);
+			bghud.setFillColor(sf::Color(100,100,100));
+
+			std::stringstream sshud;
+			sshud << "Generation: " << generationCpt;
+			sf::Text hudText(sshud.str());
+			hudText.setCharacterSize(10);
+			hudText.setColor(sf::Color::White);
+
+			window->draw(bghud);
+			window->draw(hudText);
+
 			window->display();
 			clock.restart();
 		}
 
+		// maikng snapshot
+		if(generationCpt%10 == 1)
+		{
+			if(!screened)
+			{
+//				std::cout << "SMILE!" << std::endl;
+				screened = true;
+			}
+		}
+		else
+		{
+			screened = false;
+		}
+
 		EntityManager::getInstance()->deleteQueue();
+
+		if(nbAlive <= 0)
+		{
+			// search for the most interesting
+			Genome g;
+			float maxScore = 0.f;
+			for(unsigned int i=0; i<scenes.size(); i++)
+			{
+				Scene *s = scenes[i];
+				if(s->getScore() > maxScore)
+				{
+					maxScore = s->getScore();
+					g = s->getAlgGenome();
+				}
+			}
+			// init new generation
+			currentGenome = g;
+			initGenerationScenes();
+		}
 	}
 }
 

@@ -23,7 +23,7 @@ private:
 	bool hasBrackets(int scheme);
 
 	std::string schemes[3];
-	char singleSymbols[6];
+	char singleSymbols[10];
 };
 
 #endif // GENOME_HPP
