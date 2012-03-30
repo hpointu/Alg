@@ -22,6 +22,8 @@ public:
 
 	void addSegment(double x1, double y1, double x2, double y2);
 
+	inline float getLifetime(){ return lifetime; }
+
 	bool isAlive();
 
 private:

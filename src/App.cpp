@@ -5,6 +5,30 @@ App::App()
 
 }
 
+void App::initGenerationScenes()
+{
+	int nbScenesX = 4;
+	int nbScenesY = 3;
+	Genome copy = currentGenome;
+
+	scenes.clear();
+
+	for(int j=0; j<nbScenesY; j++)
+	{
+		for(int i=0; i<nbScenesX; i++)
+		{
+			scenes.push_back(new Scene(W_WIDTH/nbScenesX,
+												W_HEIGHT/nbScenesY,
+												i*(W_WIDTH/nbScenesX),
+												j*(W_HEIGHT/nbScenesY))
+								  );
+			scenes.back()->initAlg(copy);
+			copy = currentGenome;
+			copy.mutateRandomScheme();
+		}
+	}
+}
+
 void App::run()
 {
 	srand(time(0)); // init random
@@ -16,27 +40,8 @@ void App::run()
 											sf::Style::Close);
 
 
-	Genome copy;
 
-	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, 0, 0));
-	copy = currentGenome;
-//	copy.mutateRandomScheme();
-	scenes.back()->initAlg(copy);
-
-	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, W_WIDTH/2, 0));
-	copy = currentGenome;
-	copy.mutateRandomScheme();
-	scenes.back()->initAlg(copy);
-
-	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, 0, W_HEIGHT/2));
-	copy = currentGenome;
-	copy.mutateRandomScheme();
-	scenes.back()->initAlg(copy);
-
-	scenes.push_back(new Scene(W_WIDTH/2, W_HEIGHT/2, W_WIDTH/2, W_HEIGHT/2));
-	copy = currentGenome;
-	copy.mutateRandomScheme();
-	scenes.back()->initAlg(copy);
+	initGenerationScenes();
 
 //	scenes.push_back(new Scene(W_WIDTH, W_HEIGHT, 0, 0));
 

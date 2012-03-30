@@ -4,6 +4,7 @@
 #include "ContactListener.hpp"
 #include <iostream>
 #include "EntityManager.hpp"
+#include <sstream>
 
 Scene::Scene(int w, int h, int x, int y) :
 	width(w),
@@ -64,6 +65,22 @@ void Scene::render(sf::RenderTarget *target)
 		p->render(target);
 
 	}
+
+	sf::RectangleShape bglt(sf::Vector2f(60.f/SCALE, 13.f/SCALE));
+	bglt.setPosition((float)width/2.f/SCALE - 80.f/SCALE,
+						  (float)height/2.f/SCALE - 22.f/SCALE);
+	bglt.setFillColor(sf::Color::Yellow);
+	target->draw(bglt);
+
+	std::stringstream sslt;
+	sslt << alg.getLifetime();
+	sf::Text lt(sslt.str());
+	lt.setCharacterSize(12);
+	lt.setScale(0.1, 0.1);
+	lt.setColor(sf::Color::Black);
+	lt.setPosition((float)width/2.f/SCALE - 80.f/SCALE,
+						(float)height/2.f/SCALE - 22.f/SCALE);
+	target->draw(lt);
 
 	// physics step :
 	float32 tstep = 1.0f/20.0f;

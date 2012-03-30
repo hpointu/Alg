@@ -23,6 +23,7 @@ class App : public Singleton<App>
 public:
 	void run();
 	sf::RenderTarget* getRenderTarget();
+	void initGenerationScenes();
 
 private:
 	App();
