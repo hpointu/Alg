@@ -4,7 +4,7 @@
 
 Kern::Kern(b2World *physics) :
 	Entity(physics),
-	pv(5)
+	pv(9)
 {
 	b2BodyDef def;
 	def.position.Set(0,0);

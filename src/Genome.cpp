@@ -16,8 +16,8 @@ Genome::Genome()
 	singleSymbols[9] = '+';
 
 	schemes[0] = "B";
-	schemes[1] = "[---FFC][+++FFC]FFC";
-	schemes[2] = "[----FF][++++FF]FBF";
+	schemes[1] = "[---FFC][+++FFC]FFC[]";
+	schemes[2] = "[----FF][++++FF]FBF[]";
 }
 
 LSys Genome::getLSys() const
@@ -97,7 +97,8 @@ void Genome::transformOneChar(int scheme)
 void Genome::addOneChar(int scheme)
 {
 	std::string str = schemes[scheme];
-	int pos = str.size()>0 ? rand()%str.size() : 0;
+	int pos = str.size()>0 ? rand()%(str.size()+1) : 0;
+	std::cout << "pos " << pos << std::endl;
 	char newChar = singleSymbols[rand()%10];
 	str.insert(pos, 1, newChar);
 	schemes[scheme] = str;
@@ -130,7 +131,7 @@ bool Genome::hasBrackets(int scheme)
 void Genome::addBrackets(int scheme)
 {
 	if(!hasBrackets(scheme))
-//	if(true)
+//	if(false)
 	{
 		std::string str = schemes[scheme];
 		int pos1 = str.size()>0 ? rand()%str.size() : 0;

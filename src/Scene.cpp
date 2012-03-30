@@ -133,7 +133,7 @@ void Scene::render(sf::RenderTarget *target)
 float Scene::getScore()
 {
 	float mod = 0;
-	int maxSize = 2000;
+	int maxSize = 3000;
 	int size = alg->getSize();
 	if(size>maxSize)
 	{
