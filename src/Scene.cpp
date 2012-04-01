@@ -5,6 +5,8 @@
 #include <iostream>
 #include "EntityManager.hpp"
 #include <sstream>
+#include "App.hpp"
+#include "Launcher.hpp"
 
 Scene::Scene(int w, int h, int x, int y) :
 	width(w),
@@ -41,10 +43,18 @@ bool Scene::isRunning()
 
 Scene::~Scene()
 {
+	std::vector<Particle*>::iterator it;
+	for(it=particles.begin(); it!=particles.end(); it++)
+	{
+		Particle *p = *it;
+		EntityManager::getInstance()->enqueueToDelete(p);
+		EntityManager::getInstance()->deleteQueue();
+	}
 	if(alg)
 		delete alg;
 	delete physics;
 	delete view;
+	particles.clear();
 
 
 	for(unsigned int i=0; i<particles.size(); i++)
@@ -73,31 +83,31 @@ void Scene::_render(sf::RenderTarget *target)
 
 	}
 
-	sf::RectangleShape bglt(sf::Vector2f(60.f/SCALE, 35.f/SCALE));
-	bglt.setPosition((float)width/2.f/SCALE - 80.f/SCALE,
-						  (float)height/2.f/SCALE - 42.f/SCALE);
-	bglt.setFillColor(sf::Color::Yellow);
+	sf::RectangleShape bglt(sf::Vector2f(53.f/SCALE, 22.f/SCALE));
+	bglt.setPosition((float)width/2.f/SCALE - 59.f/SCALE,
+						  (float)height/2.f/SCALE - 24.f/SCALE);
+	bglt.setFillColor(sf::Color(255,200,100,180));
 	target->draw(bglt);
 
 	// score
 	std::stringstream sss;
 	sss << getScore();
 	sf::Text st(sss.str());
-	st.setCharacterSize(12);
+	st.setCharacterSize(10);
 	st.setScale(0.1, 0.1);
 	st.setColor(sf::Color::Black);
-	st.setPosition((float)width/2.f/SCALE - 80.f/SCALE,
-						(float)height/2.f/SCALE - 42.f/SCALE);
+	st.setPosition((float)width/2.f/SCALE - 55.f/SCALE,
+						(float)height/2.f/SCALE - 25.f/SCALE);
 
 	// lifetime
 	std::stringstream sslt;
 	sslt << alg->getLifetime();
 	sf::Text lt(sslt.str());
-	lt.setCharacterSize(12);
+	lt.setCharacterSize(10);
 	lt.setScale(0.1, 0.1);
 	lt.setColor(sf::Color::Black);
-	lt.setPosition((float)width/2.f/SCALE - 80.f/SCALE,
-						(float)height/2.f/SCALE - 22.f/SCALE);
+	lt.setPosition((float)width/2.f/SCALE - 55.f/SCALE,
+						(float)height/2.f/SCALE - 15.f/SCALE);
 
 
 	target->draw(st);
@@ -109,17 +119,6 @@ void Scene::_render(sf::RenderTarget *target)
 		physics->Step(tstep,20,20);
 	else
 		running = false;
-
-	// delete old particles :
-	if(particles.size() > 200)
-	{
-		for(unsigned int i=0; i<100; i++)
-		{
-			Particle *p = particles.front();
-			EntityManager::getInstance()->enqueueToDelete(p);
-			particles.erase(particles.begin());
-		}
-	}
 }
 
 void Scene::render(sf::RenderTarget *target)
@@ -133,7 +132,7 @@ void Scene::render(sf::RenderTarget *target)
 float Scene::getScore()
 {
 	float mod = 0;
-	int maxSize = 3000;
+	int maxSize = 2000;
 	int size = alg->getSize();
 	if(size>maxSize)
 	{
@@ -146,12 +145,11 @@ void Scene::throwParticle(int nb)
 {
 	while(nb>0)
 	{
-		double x = width/2/SCALE;
-		double y = rand()%height;
-		y -= height/2;
-		y /= SCALE;
+		Launcher::Params l = App::getInstance()->getParticleParams();
 
-		particles.push_back( new Particle(physics, x, y) );
+		particles.push_back( new Particle(physics, l.x/SCALE, -l.y/SCALE, l.ix/SCALE, -l.iy/SCALE) );
+		if(particles.size()>200)
+			particles.erase(particles.begin());
 		nb--;
 	}
 }

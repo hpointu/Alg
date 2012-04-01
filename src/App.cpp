@@ -5,19 +5,41 @@
 
 App::App()
 {
+	srand(time(0)); // init random
+
 	generationCpt = 0;
 	screened = false;
+
+	nbScenesX = 4;
+	nbScenesY = 4;
+
+	launcher = new Launcher(W_WIDTH/nbScenesX, W_HEIGHT/nbScenesY);
+}
+
+App::~App()
+{
+	scenes.clear();
+	delete window;
+	delete history;
+	delete launcher;
+}
+
+Launcher::Params App::getParticleParams()
+{
+	return launcher->generateRandomParams();
 }
 
 void App::initGenerationScenes()
 {
 	generationCpt++;
-	int nbScenesX = 4;
-	int nbScenesY = 4;
-//	nbScenesX = 1;
-//	nbScenesY = 1;
 
 	Genome copy = currentGenome;
+
+	std::vector<Scene*>::iterator it;
+	for(it=scenes.begin(); it!=scenes.end(); it++)
+	{
+		delete *it;
+	}
 
 	scenes.clear();
 
@@ -36,23 +58,24 @@ void App::initGenerationScenes()
 		}
 	}
 
-	nbAlive = nbScenesX+nbScenesY;
+	nbAlive = nbScenesX*nbScenesY;
 
 	if(generationCpt%10==1)
-		history->addGenome(currentGenome);
+		history->addGenome(currentGenome, generationCpt);
 }
 
 void App::run()
 {
-	srand(time(0)); // init random
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 3;
 
 	window = new sf::RenderWindow(sf::VideoMode(W_WIDTH,
 															  W_HEIGHT,
 															  32),
 											"Alg",
-											sf::Style::Close);
+											sf::Style::Close, settings);
 
-	history = new HistoryWindow();
+	history = new HistoryWindow(settings);
 
 
 
@@ -63,13 +86,24 @@ void App::run()
 	sf::Clock clock, clockParticles;
 	clock.restart();
 	clockParticles.restart();
-	while(window->isOpen())
+	while(window->isOpen() && generationCpt < 4000)
 	{
 		// close event
 		sf::Event e;
 		while(window->pollEvent(e)){
 			if(e.type == sf::Event::Closed)
 				window->close();
+			// keys
+			else if(e.type == sf::Event::KeyPressed)
+			{
+				if(e.key.code == sf::Keyboard::H)
+				{
+					if(history->isOpen())
+						history->close();
+					else
+						history->open();
+				}
+			}
 		}
 
 		history->manageEvents();
@@ -79,6 +113,7 @@ void App::run()
 			window->clear(sf::Color(255, 255, 255));
 			// drawing
 			std::vector<Scene*>::iterator it;
+			nbAlive = 0;
 			for(it=scenes.begin(); it!=scenes.end(); it++)
 			{
 				Scene *scene = *it;
@@ -86,9 +121,10 @@ void App::run()
 				if(clockParticles.getElapsedTime().asSeconds() > 0.1)
 				{
 					if(scene->isRunning())
-						scene->throwParticle(10);
-					else
-						nbAlive--;
+					{
+						scene->throwParticle(8);
+						nbAlive++;
+					}
 					if(it == scenes.end())
 						clockParticles.restart();
 				}
@@ -116,23 +152,10 @@ void App::run()
 			clock.restart();
 		}
 
-		// maikng snapshot
-		if(generationCpt%10 == 1)
-		{
-			if(!screened)
-			{
-//				std::cout << "SMILE!" << std::endl;
-				screened = true;
-			}
-		}
-		else
-		{
-			screened = false;
-		}
-
 		EntityManager::getInstance()->deleteQueue();
 
-		if(nbAlive <= 0)
+
+		if(nbAlive <= 1)
 		{
 			// search for the most interesting
 			Genome g;

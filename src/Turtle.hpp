@@ -17,6 +17,7 @@ class Turtle
 {
 public:
 	Turtle();
+	~Turtle();
 	void initState(int x = 0, int y = 0);
 	void rotate(bool cw = true);
 	void stepLine(sf::RenderTarget *target);

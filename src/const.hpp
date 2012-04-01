@@ -8,4 +8,7 @@
 #define HIST_WIDTH 350
 #define HIST_HEIGHT 768
 
+#define KERNEL_RADIUS 6
+#define NB_RECURSE 5
+
 #endif // CONST_HPP

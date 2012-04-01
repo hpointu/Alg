@@ -17,6 +17,7 @@
 #include "Genome.hpp"
 #include "Alg.hpp"
 #include "HistoryWindow.hpp"
+#include "Launcher.hpp"
 
 class App : public Singleton<App>
 {
@@ -25,9 +26,12 @@ public:
 	void run();
 	sf::RenderTarget* getRenderTarget();
 	void initGenerationScenes();
+	Launcher::Params getParticleParams();
+	Launcher* getLauncher(){ return launcher; }
 
 private:
 	App();
+	~App();
 	std::vector<Scene*> scenes;
 	int nbAlive;
 	sf::RenderWindow *window;
@@ -36,6 +40,11 @@ private:
 
 	int generationCpt;
 	bool screened;
+
+	Launcher *launcher;
+
+	int nbScenesX;
+	int nbScenesY;
 
 };
 

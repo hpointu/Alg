@@ -4,7 +4,7 @@
 #include "Entity.hpp"
 #include <Box2D/Box2D.h>
 
-class Kern : Entity
+class Kern : public Entity
 {
 public:
 	Kern(b2World *physics);

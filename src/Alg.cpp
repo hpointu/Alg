@@ -13,7 +13,11 @@ Alg::~Alg()
 		Segment *s = *it;
 		EntityManager::getInstance()->enqueueToDelete(s);
 	}
+	EntityManager::getInstance()->enqueueToDelete(kernel);
 	EntityManager::getInstance()->deleteQueue();
+
+	segments.clear();
+	delete kernel;
 }
 
 Alg::Alg(b2World *physics, const Genome &genome) :
@@ -28,7 +32,7 @@ Alg::Alg(b2World *physics, const Genome &genome) :
 void Alg::growUp()
 {
 	LSys ls = genome.getLSys();
-	ls.iter(5);
+	ls.iter(NB_RECURSE);
 	repr = ls.str();
 //	turtle.build("FFFF+++++++++FFFF+++++++++FFFF+++++FFFF", this);
 	turtle.build(repr, this);

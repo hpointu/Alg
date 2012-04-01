@@ -8,6 +8,11 @@ Turtle::Turtle() :
 {
 }
 
+Turtle::~Turtle()
+{
+	states.clear();
+}
+
 void Turtle::initState(int x, int y)
 {
 	// init state

@@ -22,7 +22,7 @@ private:
 
 	bool hasBrackets(int scheme);
 
-	std::string schemes[3];
+	std::string schemes[4];
 	char singleSymbols[10];
 };
 

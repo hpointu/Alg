@@ -4,13 +4,13 @@
 
 Kern::Kern(b2World *physics) :
 	Entity(physics),
-	pv(9)
+	pv(4)
 {
 	b2BodyDef def;
 	def.position.Set(0,0);
 
 	b2CircleShape circle;
-	circle.m_radius = 10.f/SCALE;
+	circle.m_radius = (float)KERNEL_RADIUS/SCALE;
 
 	body = physics->CreateBody(&def);
 
@@ -41,8 +41,8 @@ void Kern::render(sf::RenderTarget *target)
 	{
 		sf::Color col = dead ? sf::Color(180, 0, 0, 200) : sf::Color(0, 180, 0, 200);
 		sf::CircleShape shape;
-		shape.setRadius(10.f/SCALE);
-		shape.setPosition(-10.f/SCALE,-10.f/SCALE);
+		shape.setRadius((float)KERNEL_RADIUS/SCALE);
+		shape.setPosition(-(float)KERNEL_RADIUS/SCALE,-(float)KERNEL_RADIUS/SCALE);
 		shape.setFillColor(col);
 		target->draw(shape);
 	}

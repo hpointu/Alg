@@ -2,7 +2,7 @@
 #include "const.hpp"
 #include <iostream>
 
-Particle::Particle(b2World *physics, double x, double y) :
+Particle::Particle(b2World *physics, double x, double y, double ix, double iy) :
 	Entity(physics)
 {
 	b2BodyDef def;
@@ -22,7 +22,7 @@ Particle::Particle(b2World *physics, double x, double y) :
 	body->CreateFixture(&fixtureDef);
 
 	// give random initial impulse
-	b2Vec2 vect(-90+(rand()%20), (rand()%80)-70);
+	b2Vec2 vect(ix, iy);
 //	vect = b2Vec2(-3, 0);
 	body->ApplyLinearImpulse(vect, body->GetWorldCenter());
 }

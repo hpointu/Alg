@@ -4,20 +4,22 @@
 #include <iostream>
 Genome::Genome()
 {
-	singleSymbols[0] = 'F';
-	singleSymbols[1] = 'A';
-	singleSymbols[2] = 'B';
-	singleSymbols[3] = 'C';
-	singleSymbols[4] = '-';
-	singleSymbols[5] = '-';
-	singleSymbols[6] = '-';
-	singleSymbols[7] = '+';
-	singleSymbols[8] = '+';
-	singleSymbols[9] = '+';
+	singleSymbols[0]  = 'F';
+	singleSymbols[1]  = 'A';
+	singleSymbols[2]  = 'B';
+	singleSymbols[3]  = 'C';
+	singleSymbols[4]  = 'D';
+	singleSymbols[5]  = '-';
+	singleSymbols[6]  = '-';
+	singleSymbols[7]  = '-';
+	singleSymbols[8]  = '+';
+	singleSymbols[9]  = '+';
+	singleSymbols[10] = '+';
 
 	schemes[0] = "B";
-	schemes[1] = "[---FFC][+++FFC]FFC[]";
-	schemes[2] = "[----FF][++++FF]FBF[]";
+	schemes[1] = "+++---F[--C[]][++D[]]F[++FF][--FF]F[]+-";
+	schemes[2] = "+-F--F[--FF[]][++FF[]]--B[+--C]--F[+-]+-";
+	schemes[3] = "+-F++F[--FF[]][++FF[]]++B[+-+D]++F[+-]+-";
 }
 
 LSys Genome::getLSys() const
@@ -26,14 +28,15 @@ LSys Genome::getLSys() const
 	rules["A"] = schemes[0];
 	rules["B"] = schemes[1];
 	rules["C"] = schemes[2];
+	rules["D"] = schemes[3];
 
 	return LSys(rules);
 }
 
 void Genome::mutateRandomScheme()
 {
-	int scheme = rand()%2+1;
-	int mutype = rand()%15;
+	int scheme = rand()%3+1;
+	int mutype = rand()%9;
 //	mutype = 3;
 
 	std::cout << "Mutation type: " << mutype << std::endl;
@@ -50,22 +53,22 @@ void Genome::mutateRandomScheme()
 	case 3:
 	case 4:
 	case 5:
-		addBrackets(scheme);
+		addOneChar(scheme);
 		break;
 	case 6:
 	case 7:
 	case 8:
-		removeBrackets(scheme);
+		removeOneChar(scheme);
 		break;
 	case 9:
 	case 10:
 	case 11:
-		addOneChar(scheme);
+		addBrackets(scheme);
 		break;
 	case 12:
 	case 13:
 	case 14:
-		removeOneChar(scheme);
+		removeBrackets(scheme);
 		break;
 	default:
 		break;
