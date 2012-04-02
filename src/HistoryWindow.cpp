@@ -30,6 +30,7 @@ void HistoryWindow::addGenome(const Genome &genome, int generation)
 	infos.generation = generation;
 	reprs.push_back(infos);
 
+/*
 	// export to image
 	sf::RenderTexture rt;
 	rt.create(HIST_WIDTH, vstep);
@@ -49,7 +50,7 @@ void HistoryWindow::addGenome(const Genome &genome, int generation)
 	filename << "history/generation-";
 	filename << generation << ".png";
 	img.saveToFile(filename.str());
-
+*/
 }
 
 void HistoryWindow::manageEvents()
