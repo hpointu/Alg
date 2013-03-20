@@ -10,7 +10,7 @@ App::App()
 	generationCpt = 0;
 	screened = false;
 
-	nbScenesX = 4;
+	nbScenesX = 3;
 	nbScenesY = 4;
 
 	launcher = new Launcher(W_WIDTH/nbScenesX, W_HEIGHT/nbScenesY);
@@ -136,9 +136,11 @@ void App::run()
 			bghud.setPosition(0,0);
 			bghud.setFillColor(sf::Color(100,100,100));
 
+			sf::Font font;
+			font.loadFromFile("arial.ttf");
 			std::stringstream sshud;
 			sshud << "Generation: " << generationCpt;
-			sf::Text hudText(sshud.str());
+			sf::Text hudText(sf::String(sshud.str()), font);
 			hudText.setCharacterSize(10);
 			hudText.setColor(sf::Color::White);
 

@@ -123,6 +123,9 @@ void HistoryWindow::render()
 void HistoryWindow::drawAlg(sf::RenderTarget *target, int y, unsigned int i)
 {
 	// kernel
+	sf::Font font;
+	font.loadFromFile("arial.ttf");
+
 	sf::Color col =  sf::Color(100, 100, 100);
 	sf::CircleShape shape;
 	shape.setRadius((float)KERNEL_RADIUS);
@@ -175,7 +178,7 @@ void HistoryWindow::drawAlg(sf::RenderTarget *target, int y, unsigned int i)
 	infosBg.setPosition(-HIST_WIDTH/2.f, y-(vstep/2.f));
 	std::stringstream sshud;
 	sshud << "Generation: " << reprs[i].generation;
-	sf::Text genText(sshud.str());
+	sf::Text genText(sshud.str(), font);
 	genText.setPosition(-HIST_WIDTH/2.f +3, y-(vstep/2.f));
 	genText.setCharacterSize(10);
 	genText.setColor(sf::Color::White);

@@ -89,10 +89,12 @@ void Scene::_render(sf::RenderTarget *target)
 	bglt.setFillColor(sf::Color(255,200,100,180));
 	target->draw(bglt);
 
+	sf::Font font;
+	font.loadFromFile("arial.ttf");
 	// score
 	std::stringstream sss;
 	sss << getScore();
-	sf::Text st(sss.str());
+	sf::Text st(sss.str(), font);
 	st.setCharacterSize(10);
 	st.setScale(0.1, 0.1);
 	st.setColor(sf::Color::Black);
@@ -102,7 +104,7 @@ void Scene::_render(sf::RenderTarget *target)
 	// lifetime
 	std::stringstream sslt;
 	sslt << alg->getLifetime();
-	sf::Text lt(sslt.str());
+	sf::Text lt(sslt.str(), font);
 	lt.setCharacterSize(10);
 	lt.setScale(0.1, 0.1);
 	lt.setColor(sf::Color::Black);
